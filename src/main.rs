@@ -9,7 +9,10 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use scrambler::get_scramble;
-use std::io::{self, Stdout};
+use std::{
+    io::{self, Stdout},
+    ops::Div,
+};
 use timer::Timer;
 use tui::{backend::CrosstermBackend, Terminal};
 use ui::render_ui;
@@ -39,6 +42,27 @@ impl App {
     fn new_scramble(&mut self) {
         self.scramble_history.push(self.scramble.clone());
         self.scramble = get_scramble();
+    }
+
+    fn get_avg_five(&self) -> Option<Duration> {
+        if self.time_history.len() >= 5 {
+            let mut last_five: Vec<_> = self.time_history.iter().rev().take(5).collect();
+            let max = last_five.iter().max().unwrap().clone();
+            let min = last_five.iter().min().unwrap().clone();
+
+            last_five.retain(|d| *d != max && *d != min);
+            let mut sum: Option<Duration> = Some(Duration::zero());
+            for d in last_five.iter() {
+                if let Some(s) = sum {
+                    sum = s.checked_add(d)
+                }
+            }
+
+            if let Some(s) = sum {
+                return Some(s.div(3));
+            }
+        }
+        None
     }
 }
 
