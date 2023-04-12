@@ -90,7 +90,7 @@ pub fn render_ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
             ListItem::new(Span::raw("")),
             ListItem::new(Span::raw("SHIFT+LEFT ARROW - previous scramble")),
             ListItem::new(Span::raw("")),
-            ListItem::new(Span::raw("SHIFT+RIGHT ARROW - previous scramble")),
+            ListItem::new(Span::raw("SHIFT+RIGHT ARROW - next scramble")),
             ListItem::new(Span::raw("")),
             ListItem::new(Span::raw("? - toggle help")),
             ListItem::new(Span::raw("")),
