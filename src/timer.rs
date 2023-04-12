@@ -50,11 +50,10 @@ impl Timer {
 impl Display for Timer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let elapsed = self.get_elapsed();
-        write!(
-            f,
-            "{}.{}",
-            elapsed.num_seconds(),
-            elapsed.num_milliseconds()
-        )
+        write!(f, "{}", format_duration(&elapsed))
     }
+}
+
+pub fn format_duration(d: &Duration) -> String {
+    format!("{}.{}", d.num_seconds(), d.num_milliseconds())
 }

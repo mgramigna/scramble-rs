@@ -8,7 +8,7 @@ use tui::{
     Frame,
 };
 
-use crate::App;
+use crate::{timer::format_duration, App};
 
 fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
     let layout = Layout::default()
@@ -113,7 +113,7 @@ pub fn render_ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
         let avg_five_text: String;
 
         if let Some(d) = app.get_avg_five() {
-            avg_five_text = format!("{}.{}", d.num_seconds(), d.num_milliseconds());
+            avg_five_text = format_duration(&d);
         } else {
             avg_five_text = "DNF".to_string();
         }
@@ -144,11 +144,7 @@ pub fn render_ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
         .iter()
         .rev()
         .map(|d| {
-            let content = vec![Spans::from(Span::raw(format!(
-                "{}.{}",
-                d.num_seconds(),
-                d.num_milliseconds()
-            )))];
+            let content = vec![Spans::from(Span::raw(format_duration(d)))];
             ListItem::new(content)
         })
         .collect();
